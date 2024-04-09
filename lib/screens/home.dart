@@ -25,6 +25,14 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: Colors.deepPurple,
           foregroundColor: Colors.white,
           shadowColor: Colors.deepPurple,
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/bookmarks');
+              },
+              icon: const Icon(Icons.bookmark_rounded),
+            ),
+          ],
         ),
         bottomNavigationBar: BottomNavigationBar(
           selectedItemColor: Colors.deepPurple,

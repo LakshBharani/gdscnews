@@ -13,6 +13,7 @@ class NewsDetailsPage extends StatefulWidget {
 class _NewsDetailsPageState extends State<NewsDetailsPage> {
   String newsTitle = "";
   String newsURL = "";
+
   bool isBookmarked = false;
 
   DatabaseHelper dbHelper = DatabaseHelper();
@@ -100,27 +101,31 @@ class _NewsDetailsPageState extends State<NewsDetailsPage> {
     print(newsTitle);
   }
 
-  void bookMarkPressHandler(Map args) {
+  void bookMarkPressHandler(Map args) async {
     isBookmarked
         ? dbHelper.deleteNews(args['newsId'])
-        : dbHelper.saveNews({
-            "id": args['newsId'],
-            "title": newsTitle,
-            "url": newsURL,
-            "score": args['score'],
-            "descendants": args['descendants'],
-            "time": args['time'],
-            "by": args['by'],
-            "type": args['type'],
-            "deleted": args['deleted'],
-            "dead": args['dead'],
-            "parent": args['parent'],
-            "poll": args['poll'],
-            "kids": args['kids'],
-            "parts": args['parts'],
-            "descendantsList": args['descendantsList'],
-            "timeAgo": args['timeAgo'],
-            "bookmarked": isBookmarked ? 1 : 0,
-          });
+        : {
+            await fetchNewsById(args['newsId']).then((value) => {
+                  dbHelper.saveNews({
+                    "id": args['newsId'],
+                    "title": newsTitle,
+                    "url": newsURL,
+                    "score": value['score'],
+                    "descendants": value['descendants'],
+                    "time": value['time'],
+                    "by": value['by'],
+                    "type": value['type'],
+                    "deleted": value['deleted'],
+                    "dead": value['dead'],
+                    "parent": value['parent'],
+                    "poll": value['poll'],
+                    "kids": value['kids'],
+                    "parts": value['parts'],
+                    "descendantsList": value['descendantsList'],
+                    "timeAgo": value['timeAgo'],
+                    "bookmarked": isBookmarked ? 1 : 0,
+                  })
+                })
+          };
   }
 }

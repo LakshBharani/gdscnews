@@ -11,9 +11,8 @@ class NewsDataListTile extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: () {
-            Navigator.pushNamed(context, '/news-details', arguments: {
-              'newsId': newsData['id'],
-            });
+            Navigator.pushNamed(context, '/news-details',
+                arguments: {'newsId': newsData['id']});
           },
           child: ListTile(
             trailing: points(),

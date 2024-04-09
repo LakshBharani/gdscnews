@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gdscnews/screens/bookmarks.dart';
 import 'package:gdscnews/screens/home.dart';
 import 'package:gdscnews/screens/news.details.dart';
 import 'package:gdscnews/screens/user.profile.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const HomePage(),
         '/user-profile': (context) => const UserProfilePage(),
         '/news-details': (context) => const NewsDetailsPage(),
+        '/bookmarks': (context) => const BookmarksPage(),
       },
     );
   }
