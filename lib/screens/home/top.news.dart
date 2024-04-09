@@ -12,7 +12,7 @@ class BestNewsPage extends StatefulWidget {
 
 class _BestNewsPageState extends State<BestNewsPage> {
   List<dynamic> news = [];
-  Map<int, dynamic> allNewMovieData = {};
+  Map<int, dynamic> allNewsData = {};
   int newsLimit = 100;
 
   @override
@@ -32,7 +32,7 @@ class _BestNewsPageState extends State<BestNewsPage> {
             itemCount: news.length,
             itemBuilder: (context, index) {
               final newsId = news[index];
-              final newsData = allNewMovieData[newsId];
+              final newsData = allNewsData[newsId];
 
               // Display loading indicator if data is not yet fetched
               if (newsData == null) {
@@ -51,10 +51,10 @@ class _BestNewsPageState extends State<BestNewsPage> {
   void fetchNewsDetails() {
     // Fetch details for each news item asynchronously
     for (int newsId in news) {
-      if (allNewMovieData[newsId] == null) {
+      if (allNewsData[newsId] == null) {
         fetchNewsById(newsId).then((value) {
           setState(() {
-            allNewMovieData[newsId] = value;
+            allNewsData[newsId] = value;
           });
         });
       }

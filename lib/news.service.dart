@@ -127,3 +127,15 @@ Future fetchBestNewsWithLimit(int limit) async {
     throw Exception('Failed to fetch best news');
   }
 }
+
+// fetch more news by user within limit
+// check length of sublist, if it is less than limit just use full list
+Future fetchMoreNewsByUser(List<dynamic> newsIds, int limit) async {
+  final List<dynamic> newsIdsSublist =
+      newsIds.sublist(0, newsIds.length < limit ? newsIds.length : limit);
+  final List<Future> futures = [];
+  for (int id in newsIdsSublist) {
+    futures.add(fetchNewsById(id));
+  }
+  return Future.wait(futures);
+}

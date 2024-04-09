@@ -12,7 +12,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<dynamic> newNews = [];
-  Map<int, dynamic> allNewMovieData = {};
   int newNewsLimit = 10;
   bool isLoading = false;
 

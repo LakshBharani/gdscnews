@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class NewsDataListTile extends StatelessWidget {
   const NewsDataListTile({super.key, required this.newsData});
@@ -9,37 +10,57 @@ class NewsDataListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ListTile(
-          trailing: points(),
-          title: Text(
-            newsData['title'] ?? "",
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(fontWeight: FontWeight.w500, height: 1.2),
-          ),
-          subtitle: Container(
-            margin: const EdgeInsets.only(top: 3),
-            child: Wrap(
-              crossAxisAlignment: WrapCrossAlignment.center,
-              children: [
-                const Icon(
-                  Icons.person_rounded,
-                  color: Colors.deepPurple,
-                  size: 18,
-                ),
-                Text(
-                  " : ${newsData['by']}",
-                  style: const TextStyle(fontWeight: FontWeight.w500),
-                ),
-                const SizedBox(width: 10),
-                const Icon(
-                  Icons.comment,
-                  color: Colors.deepPurple,
-                  size: 18,
-                ),
-                Text(" : ${newsData['descendants']}",
-                    style: const TextStyle(fontWeight: FontWeight.w500)),
-              ],
+        GestureDetector(
+          onTap: () {
+            Navigator.pushNamed(context, '/news-details', arguments: {
+              'newsId': newsData['id'],
+            });
+          },
+          child: ListTile(
+            trailing: points(),
+            title: Text(
+              newsData['title'] ?? "",
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(fontWeight: FontWeight.w500, height: 1.2),
+            ),
+            subtitle: Container(
+              margin: const EdgeInsets.only(top: 3),
+              child: Wrap(
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/user-profile', arguments: {
+                        'userId': newsData['by'],
+                      });
+                    },
+                    child: Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      runAlignment: WrapAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.person_rounded,
+                          color: Colors.deepPurple,
+                          size: 18,
+                        ),
+                        Text(
+                          " : ${newsData['by']}",
+                          style: const TextStyle(fontWeight: FontWeight.w500),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  const Icon(
+                    Icons.comment,
+                    color: Colors.deepPurple,
+                    size: 18,
+                  ),
+                  Text(" : ${newsData['descendants']}",
+                      style: const TextStyle(fontWeight: FontWeight.w500)),
+                ],
+              ),
             ),
           ),
         ),

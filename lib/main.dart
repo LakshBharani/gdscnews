@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gdscnews/screens/home.dart';
+import 'package:gdscnews/screens/news.details.dart';
+import 'package:gdscnews/screens/user.profile.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,6 +22,8 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         '/': (context) => const HomePage(),
+        '/user-profile': (context) => const UserProfilePage(),
+        '/news-details': (context) => const NewsDetailsPage(),
       },
     );
   }
