@@ -12,6 +12,7 @@ class NewsDetailsPage extends StatefulWidget {
 class _NewsDetailsPageState extends State<NewsDetailsPage> {
   String newsTitle = "";
   String newsURL = "";
+  bool isFavorite = false;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +24,27 @@ class _NewsDetailsPageState extends State<NewsDetailsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(newsTitle),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 10.0),
+            child: IconButton(
+              onPressed: () {
+                setState(() {
+                  isFavorite = !isFavorite;
+                });
+              },
+              icon: isFavorite
+                  ? const Icon(
+                      Icons.favorite,
+                      color: Colors.redAccent,
+                    )
+                  : const Icon(
+                      Icons.favorite_border_outlined,
+                      color: Colors.black,
+                    ),
+            ),
+          ),
+        ],
       ),
       body: newsTitle == ""
           ? const Center(
