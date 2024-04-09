@@ -142,52 +142,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
           );
   }
 
-  // Widget otherNewsByUser() {
-  //   return otherNewsIds.isEmpty
-  //       ? Shimmer.fromColors(
-  //           baseColor: Colors.grey.shade300,
-  //           highlightColor: Colors.grey.shade100,
-  //           child: Container(
-  //             width: 110,
-  //             height: 20,
-  //             color: Colors.white,
-  //           ),
-  //         )
-  //       : SizedBox(
-  //           height: 600,
-  //           child: ListView.builder(
-  //             itemCount: maxNumberOfOtherUsers,
-  //             itemBuilder: (context, index) {
-  //               final newsId = otherNewsIds[index];
-  //               fetchNewsById(newsId).then((value) {
-  //                 setState(() {
-  //                   allTitles.add(value["title"]);
-  //                   allSubTitles.add(value["url"]);
-  //                 });
-  //               });
-  //               return allTitles[index] != null && allSubTitles[index] != null
-  //                   ? ListTile(
-  //                       title: Text(
-  //                         allTitles[index].toString(),
-  //                         style: const TextStyle(
-  //                           fontSize: 18,
-  //                           fontWeight: FontWeight.bold,
-  //                         ),
-  //                       ),
-  //                       subtitle: Text(
-  //                         allSubTitles[index].toString(),
-  //                         style: const TextStyle(
-  //                           fontSize: 14,
-  //                           color: Colors.black54,
-  //                         ),
-  //                       ),
-  //                     )
-  //                   : null;
-  //             },
-  //           ),
-  //         );
-  // }
-
   Future getAllMoreNews() async {
     int counter = 0;
     if (allNewsData.isEmpty) {
@@ -210,11 +164,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
   Widget getMoreNews() {
     return SizedBox(
       height: 600,
-      // child: ListView.builder(
-      //     itemCount: allTitles.length,
-      //     itemBuilder: (context, index) {
-      //       return ListTile(title: Text(allTitles[index]));
-      //     }),
       child: FutureBuilder(
         future: getAllMoreNews(),
         builder: (context, index) {
