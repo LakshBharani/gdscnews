@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class NewsDataListTile extends StatelessWidget {
   const NewsDataListTile({super.key, required this.newsData});

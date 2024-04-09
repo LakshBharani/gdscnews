@@ -3,7 +3,10 @@ import 'package:gdscnews/screens/home.dart';
 import 'package:gdscnews/screens/news.details.dart';
 import 'package:gdscnews/screens/user.profile.dart';
 
-void main() {
+Future<void> main() async {
+  // Ensuring that the Flutter bindings are initialized
+  WidgetsFlutterBinding.ensureInitialized();
+  // Running the app
   runApp(const MyApp());
 }
 

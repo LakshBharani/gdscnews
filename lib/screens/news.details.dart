@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gdscnews/models/dbhelper.dart';
 import 'package:gdscnews/news.service.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -14,10 +15,27 @@ class _NewsDetailsPageState extends State<NewsDetailsPage> {
   String newsURL = "";
   bool isBookmarked = false;
 
+  DatabaseHelper dbHelper = DatabaseHelper();
+
+  bool checkBookmarked() {
+    dbHelper.getBookmarkedNews().then((value) {
+      for (var element in value) {
+        if (element['title'] == newsTitle) {
+          setState(() {
+            isBookmarked = true;
+          });
+        }
+      }
+    });
+    return isBookmarked;
+  }
+
   @override
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+
+    isBookmarked = checkBookmarked();
 
     newsTitle == "" ? getNewsDetails(args) : null;
 
@@ -31,6 +49,9 @@ class _NewsDetailsPageState extends State<NewsDetailsPage> {
             padding: const EdgeInsets.only(right: 10.0),
             child: IconButton(
               onPressed: () {
+                bookMarkPressHandler(args);
+                print(
+                    dbHelper.getBookmarkedNews().then((value) => print(value)));
                 setState(() {
                   isBookmarked = !isBookmarked;
                 });
@@ -38,8 +59,8 @@ class _NewsDetailsPageState extends State<NewsDetailsPage> {
                   SnackBar(
                     content: Text(
                       isBookmarked
-                          ? "Added to favorites"
-                          : "Removed from favorites",
+                          ? "Added to bookmarks"
+                          : "Removed from bookmarks",
                     ),
                     duration: const Duration(seconds: 1),
                   ),
@@ -77,5 +98,29 @@ class _NewsDetailsPageState extends State<NewsDetailsPage> {
       });
     });
     print(newsTitle);
+  }
+
+  void bookMarkPressHandler(Map args) {
+    isBookmarked
+        ? dbHelper.deleteNews(args['newsId'])
+        : dbHelper.saveNews({
+            "id": args['newsId'],
+            "title": newsTitle,
+            "url": newsURL,
+            "score": args['score'],
+            "descendants": args['descendants'],
+            "time": args['time'],
+            "by": args['by'],
+            "type": args['type'],
+            "deleted": args['deleted'],
+            "dead": args['dead'],
+            "parent": args['parent'],
+            "poll": args['poll'],
+            "kids": args['kids'],
+            "parts": args['parts'],
+            "descendantsList": args['descendantsList'],
+            "timeAgo": args['timeAgo'],
+            "bookmarked": isBookmarked ? 1 : 0,
+          });
   }
 }
