@@ -34,7 +34,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
       fetchUserById(args['userId']).then((value) {
         setState(() {
           otherNewsIds = value["submitted"];
-          lenAllNews = otherNewsIds.length;
+          lenAllNews = 5;
         });
       });
     }
@@ -149,14 +149,18 @@ class _UserProfilePageState extends State<UserProfilePage> {
         await fetchNewsById(otherNewsIds[i]).then((value) {
           if (value["title"] != null && value["url"] != null) {
             setState(() {
-              allNewsData[counter.toString()] = [value["title"], value["url"]];
+              allNewsData[counter.toString()] = [
+                value["title"],
+                value["score"],
+                value["descendants"],
+                value["id"],
+              ];
               counter++;
             });
           }
         });
       }
     }
-    print(allNewsData);
 
     return Future.value(allNewsData);
   }
@@ -175,19 +179,26 @@ class _UserProfilePageState extends State<UserProfilePage> {
           return ListView.builder(
             itemCount: allNewsData.length,
             itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(
-                  allNewsData[index.toString()][0].toString(),
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+              return GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/news-details', arguments: {
+                    'newsId': allNewsData[index.toString()][3],
+                  });
+                },
+                child: ListTile(
+                  title: Text(
+                    allNewsData[index.toString()][0].toString(),
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                subtitle: Text(
-                  allNewsData[index.toString()][1].toString(),
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.black54,
+                  subtitle: Row(
+                    children: [
+                      points(allNewsData[index.toString()][1].toString()),
+                      const SizedBox(width: 10),
+                      comments(allNewsData[index.toString()][2].toString()),
+                    ],
                   ),
                 ),
               );
@@ -210,5 +221,49 @@ Widget label(String title) {
         color: Colors.deepPurple,
       ),
     ),
+  );
+}
+
+Widget points(String score) {
+  return ConstrainedBox(
+    constraints: const BoxConstraints(minWidth: 20),
+    child: Container(
+      padding: const EdgeInsets.fromLTRB(3, 2, 5, 2),
+      decoration: const BoxDecoration(
+        color: Colors.deepPurple,
+        borderRadius: BorderRadius.all(Radius.circular(5)),
+      ),
+      child: Wrap(
+        crossAxisAlignment: WrapCrossAlignment.center,
+        runAlignment: WrapAlignment.center,
+        children: [
+          const Icon(
+            Icons.star,
+            color: Colors.white,
+            size: 13,
+          ),
+          const SizedBox(width: 2),
+          Text(
+            score,
+            style: const TextStyle(
+                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget comments(String comments) {
+  return Row(
+    children: [
+      const Icon(
+        Icons.comment,
+        color: Colors.deepPurple,
+        size: 18,
+      ),
+      Text(" : $comments", style: const TextStyle(fontWeight: FontWeight.w500)),
+    ],
   );
 }

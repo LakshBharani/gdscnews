@@ -17,30 +17,32 @@ class _BestNewsPageState extends State<BestNewsPage> {
 
   @override
   Widget build(BuildContext context) {
-    fetchBestNewsWithLimit(newsLimit).then((value) {
-      setState(() {
-        news = value;
-      });
-      // Once new news is fetched, fetch details for each news item
+    Future getNews() async {
+      news = await fetchTopNewsWithLimit(newsLimit);
       fetchNewsDetails();
-    });
+    }
 
     return Column(
       children: [
         Expanded(
-          child: ListView.builder(
-            itemCount: news.length,
-            itemBuilder: (context, index) {
-              final newsId = news[index];
-              final newsData = allNewsData[newsId];
+          child: FutureBuilder(
+            future: getNews(),
+            builder: (context, snapshot) {
+              return ListView.builder(
+                itemCount: news.length,
+                itemBuilder: (context, index) {
+                  final newsId = news[index];
+                  final newsData = allNewsData[newsId];
 
-              // Display loading indicator if data is not yet fetched
-              if (newsData == null) {
-                return const ShimmerContainer();
-              }
+                  // Display loading indicator if data is not yet fetched
+                  if (newsData == null) {
+                    return const ShimmerContainer();
+                  }
 
-              // Display news item once data is fetched
-              return NewsDataListTile(newsData: newsData);
+                  // Display news item once data is fetched
+                  return NewsDataListTile(newsData: newsData);
+                },
+              );
             },
           ),
         ),

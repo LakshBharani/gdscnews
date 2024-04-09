@@ -12,7 +12,7 @@ class NewsDetailsPage extends StatefulWidget {
 class _NewsDetailsPageState extends State<NewsDetailsPage> {
   String newsTitle = "";
   String newsURL = "";
-  bool isFavorite = false;
+  bool isBookmarked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -22,24 +22,36 @@ class _NewsDetailsPageState extends State<NewsDetailsPage> {
     newsTitle == "" ? getNewsDetails(args) : null;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(newsTitle),
+        backgroundColor: Colors.white,
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 10.0),
             child: IconButton(
               onPressed: () {
                 setState(() {
-                  isFavorite = !isFavorite;
+                  isBookmarked = !isBookmarked;
                 });
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      isBookmarked
+                          ? "Added to favorites"
+                          : "Removed from favorites",
+                    ),
+                    duration: const Duration(seconds: 1),
+                  ),
+                );
               },
-              icon: isFavorite
-                  ? const Icon(
-                      Icons.favorite,
-                      color: Colors.redAccent,
+              icon: isBookmarked
+                  ? Icon(
+                      Icons.bookmark_added_rounded,
+                      color: Colors.yellow.shade800,
                     )
                   : const Icon(
-                      Icons.favorite_border_outlined,
+                      Icons.bookmark_add_rounded,
                       color: Colors.black,
                     ),
             ),
