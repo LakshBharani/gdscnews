@@ -13,7 +13,7 @@ class TopNewsPage extends StatefulWidget {
 class _TopNewsPageState extends State<TopNewsPage> {
   List<dynamic> news = [];
   Map<int, dynamic> allNewsData = {};
-  int newsLimit = 100;
+  int newsLimit = 40;
   List<dynamic> news_copy = [];
 
   TextEditingController searchController = TextEditingController();

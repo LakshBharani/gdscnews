@@ -13,7 +13,7 @@ class NewNewsPage extends StatefulWidget {
 class _NewNewsPageState extends State<NewNewsPage> {
   List<dynamic> news = [];
   Map<int, dynamic> allNewsData = {};
-  int newsLimit = 100;
+  int newsLimit = 40;
   List<dynamic> news_copy = [];
 
   TextEditingController searchController = TextEditingController();
@@ -39,6 +39,7 @@ class _NewNewsPageState extends State<NewNewsPage> {
               news = news_copy;
             })
           : setState(() {
+              news = news_copy;
               news = news
                   .where((element) => allNewsData[element]['title']
                       .toLowerCase()
