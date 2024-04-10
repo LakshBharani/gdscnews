@@ -56,6 +56,12 @@ class _NewsDetailsPageState extends State<NewsDetailsPage> {
                 });
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
+                    action: SnackBarAction(
+                      label: "View",
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/bookmarks');
+                      },
+                    ),
                     content: Text(
                       isBookmarked
                           ? "Added to bookmarks"

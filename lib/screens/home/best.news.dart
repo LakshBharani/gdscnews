@@ -55,7 +55,7 @@ class _BestNewsPageState extends State<BestNewsPage> {
           child: CupertinoSearchTextField(
             controller: searchController,
             placeholder: 'Search news',
-            onSubmitted: (value) {
+            onChanged: (value) {
               getFilteredNews(value);
             },
           ),
