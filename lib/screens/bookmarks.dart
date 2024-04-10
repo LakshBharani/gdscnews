@@ -16,7 +16,7 @@ class _BookmarksPageState extends State<BookmarksPage> {
   void getBookmarkedNews() {
     dbHelper.getBookmarkedNews().then((value) {
       setState(() {
-        bookmarks = value;
+        bookmarks = value.reversed.toList();
       });
     });
   }
@@ -31,12 +31,16 @@ class _BookmarksPageState extends State<BookmarksPage> {
         foregroundColor: Colors.white,
         shadowColor: Colors.deepPurple,
       ),
-      body: ListView.builder(
-        itemCount: bookmarks.length,
-        itemBuilder: (context, index) {
-          return NewsDataListTile(newsData: bookmarks[index]);
-        },
-      ),
+      body: bookmarks.isNotEmpty
+          ? ListView.builder(
+              itemCount: bookmarks.length,
+              itemBuilder: (context, index) {
+                return NewsDataListTile(newsData: bookmarks[index]);
+              },
+            )
+          : const Center(
+              child: Text('Add a bookmark to view it here'),
+            ),
     );
   }
 }

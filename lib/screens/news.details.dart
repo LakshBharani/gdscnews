@@ -51,8 +51,6 @@ class _NewsDetailsPageState extends State<NewsDetailsPage> {
             child: IconButton(
               onPressed: () {
                 bookMarkPressHandler(args);
-                print(
-                    dbHelper.getBookmarkedNews().then((value) => print(value)));
                 setState(() {
                   isBookmarked = !isBookmarked;
                 });
@@ -66,8 +64,10 @@ class _NewsDetailsPageState extends State<NewsDetailsPage> {
                     duration: const Duration(seconds: 1),
                   ),
                 );
+                print(
+                    dbHelper.getBookmarkedNews().then((value) => print(value)));
               },
-              icon: isBookmarked
+              icon: checkBookmarked()
                   ? Icon(
                       Icons.bookmark_added_rounded,
                       color: Colors.yellow.shade800,
@@ -84,10 +84,12 @@ class _NewsDetailsPageState extends State<NewsDetailsPage> {
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : WebView(
-              initialUrl: newsURL,
-              javascriptMode: JavascriptMode.unrestricted,
-            ),
+          : newsURL == ""
+              ? const Center(child: Text("No URL found for this news."))
+              : WebView(
+                  initialUrl: newsURL,
+                  javascriptMode: JavascriptMode.unrestricted,
+                ),
     );
   }
 
