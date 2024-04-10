@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:gdscnews/news.service.dart';
 import 'package:gdscnews/screens/home/news.data.widget.dart';
 import 'package:gdscnews/screens/home/shimmer.dart';
@@ -14,19 +14,54 @@ class _NewNewsPageState extends State<NewNewsPage> {
   List<dynamic> news = [];
   Map<int, dynamic> allNewsData = {};
   int newsLimit = 100;
+  List<dynamic> news_copy = [];
+
+  TextEditingController searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     Future getNews() async {
       news = await fetchNewNewsWithLimit(newsLimit);
+      setState(() {
+        news_copy = news;
+      });
       fetchNewsDetails();
+      return news;
+    }
+
+    if (news.isEmpty) {
+      getNews();
+    }
+
+    Future getFilteredNews(String value) async {
+      value.isEmpty
+          ? setState(() {
+              news = news_copy;
+            })
+          : setState(() {
+              news = news
+                  .where((element) => allNewsData[element]['title']
+                      .toLowerCase()
+                      .contains(value.toLowerCase()))
+                  .toList();
+            });
     }
 
     return Column(
       children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: CupertinoSearchTextField(
+            controller: searchController,
+            placeholder: 'Search news',
+            onChanged: (value) {
+              getFilteredNews(value);
+            },
+          ),
+        ),
         Expanded(
           child: FutureBuilder(
-            future: getNews(),
+            future: getFilteredNews(searchController.text),
             builder: (context, snapshot) {
               return ListView.builder(
                 itemCount: news.length,
